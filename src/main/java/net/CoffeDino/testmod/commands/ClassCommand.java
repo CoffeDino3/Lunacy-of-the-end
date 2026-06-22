@@ -1,4 +1,3 @@
-// net/CoffeDino/testmod/commands/ClassCommand.java
 package net.CoffeDino.testmod.commands;
 
 import com.mojang.brigadier.CommandDispatcher;

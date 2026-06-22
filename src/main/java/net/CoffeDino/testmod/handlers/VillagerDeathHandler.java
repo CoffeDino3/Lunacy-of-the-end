@@ -17,11 +17,8 @@ public class VillagerDeathHandler {
     public static void onVillagerDeath(LivingDeathEvent event) {
         if (event.getEntity() instanceof Villager villager) {
             Entity source = event.getSource().getEntity();
-
-            // Check if killed by a player with Gunsmith class
             if (source instanceof Player player) {
                 if (PlayerClasses.getPlayerClass(player) == PlayerClasses.PlayerClass.GUNSMITH) {
-                    // Drop 1-3 lament bullets
                     if (villager.getRandom().nextFloat() < 0.8f) {
                         int bulletCount = 1 + villager.getRandom().nextInt(3);
                         ItemStack bullets = new ItemStack(ModItems.LAMENT_BULLET.get(), bulletCount);

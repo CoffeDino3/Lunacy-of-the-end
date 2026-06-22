@@ -1,4 +1,3 @@
-// DeactivateCelestialAbilityPacket.java
 package net.CoffeDino.testmod.network;
 
 import net.CoffeDino.testmod.Lunacy;
@@ -18,7 +17,6 @@ public record DeactivateCelestialAbilityPacket() implements CustomPacketPayload 
     }
 
     public void encode(FriendlyByteBuf buf) {
-        // No data needed
     }
 
     public static void handle(DeactivateCelestialAbilityPacket packet, CustomPayloadEvent.Context context) {

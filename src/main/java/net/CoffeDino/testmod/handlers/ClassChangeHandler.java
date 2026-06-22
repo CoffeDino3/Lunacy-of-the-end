@@ -11,7 +11,6 @@ public class ClassChangeHandler {
     @SubscribeEvent
     public static void onClassChange(EntityJoinLevelEvent event) {
         if (event.getEntity() instanceof Player player && !event.getLevel().isClientSide()) {
-            // Check for guns when player joins world
             InventoryHandler.checkAndRemoveGun(player);
         }
     }

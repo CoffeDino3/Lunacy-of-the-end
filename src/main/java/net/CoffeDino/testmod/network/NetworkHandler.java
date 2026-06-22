@@ -148,6 +148,17 @@ public class NetworkHandler {
                 .decoder(SyncChronobreakCooldownPacket::new)
                 .consumerMainThread(SyncChronobreakCooldownPacket::handle)
                 .add();
+        INSTANCE.messageBuilder(ActivateGatekeeperAbilityPacket.class, 25, NetworkDirection.PLAY_TO_SERVER)
+                .encoder(ActivateGatekeeperAbilityPacket::encode)
+                .decoder(ActivateGatekeeperAbilityPacket::new)
+                .consumerMainThread(ActivateGatekeeperAbilityPacket::handle)
+                .add();
+        INSTANCE.messageBuilder(DeactivateGatekeeperAbilityPacket.class, 26, NetworkDirection.PLAY_TO_SERVER)
+                .encoder(DeactivateGatekeeperAbilityPacket::encode)
+                .decoder(DeactivateGatekeeperAbilityPacket::new)
+                .consumerMainThread(DeactivateGatekeeperAbilityPacket::handle)
+                .add();
+
     }
 
     public static <T extends CustomPacketPayload> void sendToServer(T message) {
@@ -186,4 +197,5 @@ public class NetworkHandler {
     public static void openClassSelection() {
         INSTANCE.send(new OpenClassSelectionPacket(), PacketDistributor.SERVER.noArg());
     }
+
 }

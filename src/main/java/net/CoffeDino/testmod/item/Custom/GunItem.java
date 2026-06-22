@@ -161,8 +161,6 @@ public class GunItem extends Item {
                 }
             }
         }
-
-        // Small burst effect at barrel
         if (level instanceof ServerLevel serverLevel) {
             serverLevel.sendParticles(ParticleTypes.POOF,
                     barrelPos.x, barrelPos.y, barrelPos.z,

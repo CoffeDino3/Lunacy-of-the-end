@@ -1,6 +1,11 @@
 package net.CoffeDino.testmod.effects;
 
 import net.minecraft.core.Holder;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
@@ -36,6 +41,7 @@ public class EffectEventHandlers {
     public static void onLivingDamageEther(LivingDamageEvent event) {
         EtherEffect.handleLivingDamage(event);
     }
+
 
     @SubscribeEvent(priority = EventPriority.LOW)
     public static void onLivingDamageMourningFuneral(LivingDamageEvent event) {
@@ -77,6 +83,38 @@ public class EffectEventHandlers {
             if (effectInstance != null) {
                 int amplifier = effectInstance.getAmplifier();
                 MourningFuneralEffect.spawnAdditionalParticles(entity, serverLevel, amplifier);
+            }
+        }
+    }
+    @SubscribeEvent
+    public static void onLivingTickSoulClaim(LivingEvent.LivingTickEvent event) {
+        LivingEntity entity = event.getEntity();
+
+        if (!entity.level().isClientSide() &&
+                entity.hasEffect(ModEffects.SOUL_CLAIM.getHolder().get()) &&
+                entity.tickCount % 40 == 0) {
+
+            MobEffectInstance effectInstance = entity.getEffect(ModEffects.SOUL_CLAIM.getHolder().get());
+            if (effectInstance != null) {
+                int amplifier = effectInstance.getAmplifier();
+                float healAmount = 1.0f + amplifier;
+
+                if (healAmount > 0) {
+                    entity.heal(healAmount);
+
+                    if (entity.level() instanceof ServerLevel serverLevel) {
+                        serverLevel.sendParticles(
+                                ParticleTypes.SOUL,
+                                entity.getX(), entity.getY() + entity.getBbHeight() * 0.5, entity.getZ(),
+                                4 + amplifier, 0.5, 0.5, 0.5, 0.05
+                        );
+                    }
+
+                    if (entity.tickCount % 120 == 0) {
+                        entity.level().playSound(null, entity.getX(), entity.getY(), entity.getZ(),
+                                SoundEvents.SOUL_ESCAPE, SoundSource.NEUTRAL, 0.3F, 1.2F);
+                    }
+                }
             }
         }
     }

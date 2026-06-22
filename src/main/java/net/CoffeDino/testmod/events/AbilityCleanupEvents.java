@@ -1,4 +1,3 @@
-// Add this to your existing event handler class, or create a new one
 package net.CoffeDino.testmod.events;
 
 import net.CoffeDino.testmod.Lunacy;

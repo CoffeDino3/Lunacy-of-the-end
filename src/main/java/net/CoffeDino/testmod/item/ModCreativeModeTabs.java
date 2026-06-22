@@ -40,6 +40,9 @@ public class ModCreativeModeTabs {
                         output.accept(ModItems.LAMENT_GUN.get());
                         output.accept(ModItems.VIRIDYUM_GREATSWORD.get());
                         output.accept(ModItems.AGNIS_FURY.get());
+                        output.accept(ModItems.SOUL_SCYTHE.get());
+                        output.accept(ModItems.SHI_BOW.get());
+                        output.accept(ModItems.SHI_ARROW.get());
                     })
 
                     .build());

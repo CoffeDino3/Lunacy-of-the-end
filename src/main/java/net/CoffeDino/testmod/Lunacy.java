@@ -1,12 +1,14 @@
 package net.CoffeDino.testmod;
 
 import com.mojang.logging.LogUtils;
+import net.CoffeDino.testmod.attributes.ModAttributes;
 import net.CoffeDino.testmod.block.ModBlocks;
 import net.CoffeDino.testmod.capability.ISculkStorage;
 import net.CoffeDino.testmod.commands.ClassCommand;
 import net.CoffeDino.testmod.commands.RaceCommand;
 import net.CoffeDino.testmod.effects.ModEffects;
 import net.CoffeDino.testmod.entity.ModEntities;
+import net.CoffeDino.testmod.entity.abilities.GatekeeperProjectileEntity;
 import net.CoffeDino.testmod.item.Custom.FireSpearItem;
 import net.CoffeDino.testmod.item.ModCreativeModeTabs;
 import net.CoffeDino.testmod.item.ModItems;
@@ -15,8 +17,7 @@ import net.CoffeDino.testmod.network.NetworkHandler;
 import net.CoffeDino.testmod.particle.ClockParticle;
 import net.CoffeDino.testmod.particle.ModParticles;
 import net.CoffeDino.testmod.particle.MourningButterflyParticle;
-import net.CoffeDino.testmod.renderer.FireSpearRenderer;
-import net.CoffeDino.testmod.renderer.LamentBulletRenderer;
+import net.CoffeDino.testmod.renderer.*;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.resources.ResourceLocation;
@@ -39,8 +40,6 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.slf4j.Logger;
-import net.CoffeDino.testmod.renderer.AngelbornAbilityRenderer;
-
 
 
 @Mod(Lunacy.MOD_ID)
@@ -60,6 +59,7 @@ public class Lunacy
         ModMenuTypes.MENUS.register(modEventBus);
         ModEntities.ENTITIES.register(modEventBus);
         ModParticles.register(modEventBus);
+        ModAttributes.ATTRIBUTES.register(modEventBus);
 
         modEventBus.addListener(this::commonSetup);
         modEventBus.addListener(this::addCreative);
@@ -112,6 +112,10 @@ public class Lunacy
         {
             EntityRenderers.register(ModEntities.ANGELBORN_ABILITY.get(), AngelbornAbilityRenderer::new);
             LOGGER.debug("Angelborn ability renderer registered");
+            EntityRenderers.register(ModEntities.GATEKEEPER_PORTAL.get(), GatekeeperPortalRenderer::new);
+            LOGGER.debug("Gatekeeper portal renderer registered");
+            EntityRenderers.register(ModEntities.GATEKEEPER_PROJECTILE.get(), GatekeeperProjectileRenderer::new);
+            LOGGER.debug("Gatekeeper projectile renderer registered");
             EntityRenderers.register(ModEntities.LAMENT_BULLET.get(), LamentBulletRenderer::new);
             LOGGER.debug("Lament bullet renderer registered");
             EntityRenderers.register(ModEntities.FIRE_SPEAR.get(), FireSpearRenderer::new);
@@ -120,6 +124,7 @@ public class Lunacy
                         ResourceLocation.fromNamespaceAndPath(MOD_ID, "charged"),
                         (stack, level, entity, seed) -> FireSpearItem.isCharged(stack) ? 1.0F : 0.0F);
             });
+
         }
 
         @SubscribeEvent

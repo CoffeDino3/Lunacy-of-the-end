@@ -12,7 +12,7 @@ import net.minecraft.world.level.Level;
 
 public class RaceResetScrollItem extends Item {
     public RaceResetScrollItem(Properties properties) {
-        super(properties.stacksTo(1)); // Set stack limit to 1
+        super(properties.stacksTo(1));
     }
 
     @Override
@@ -20,27 +20,17 @@ public class RaceResetScrollItem extends Item {
         ItemStack itemStack = player.getItemInHand(hand);
 
         if (level.isClientSide()) {
-            // On client side, clear the race and open selection screen immediately
             races.setClientRace(null);
             races.resetClientRace();
-
-            // Open the race selection screen
             Minecraft.getInstance().setScreen(new RaceSelectionScreen());
-
-            // Consume the scroll on client
             if (!player.getAbilities().instabuild) {
                 itemStack.shrink(1);
             }
         } else {
-            // On server side, clear the race data
             races.clearPlayerRace(player);
-
-            // Consume the scroll
             if (!player.getAbilities().instabuild) {
                 itemStack.shrink(1);
             }
-
-            // Send message to player
             player.sendSystemMessage(net.minecraft.network.chat.Component.literal("Your race has been reset! Choose a new one."));
         }
 

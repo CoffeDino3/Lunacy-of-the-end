@@ -1,4 +1,3 @@
-// net/CoffeDino/testmod/classes/PlayerClasses.java
 package net.CoffeDino.testmod.classes;
 
 import net.CoffeDino.testmod.Lunacy;

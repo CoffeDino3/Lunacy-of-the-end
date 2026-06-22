@@ -24,7 +24,7 @@ import net.minecraft.world.phys.Vec3;
 import java.util.List;
 
 public class ViridyumGreatswordItem extends GreatswordItem {
-    private static final int COOLDOWN_TICKS = 20 * 60 * 10; // 10 minutes
+    private static final int COOLDOWN_TICKS = 20 * 60 * 10;
     private static long clientCooldownEnd = 0;
 
     public ViridyumGreatswordItem(Tier tier, Properties properties) {
@@ -50,7 +50,7 @@ public class ViridyumGreatswordItem extends GreatswordItem {
 
             if (data.isOnCooldown() && currentTime >= data.getCooldownEnd()) {
                 data.setOnCooldown(false);
-                data.setLastSaveTime(currentTime); // Reset save time after cooldown
+                data.setLastSaveTime(currentTime);
                 player.displayClientMessage(Component.literal("Chronobreak ready! Position saved.")
                         .withStyle(ChatFormatting.GREEN), true);
             }

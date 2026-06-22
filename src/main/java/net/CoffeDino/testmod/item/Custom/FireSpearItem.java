@@ -33,11 +33,11 @@ import net.minecraftforge.fml.common.Mod;
 import java.util.List;
 
 public class FireSpearItem extends SpearItem {
-    private static final int CHARGE_TIME = 60;          // 3 seconds (60 ticks)
-    private static final int THROW_TIME = 60;           // 3 seconds for throw
-    private static final int SOUL_FIRE_DURATION = 260;  // 13 seconds
-    private static final int COOLDOWN_TIME = 200;       // 10 seconds
-    private static final int USE_DURATION = 72000;      // Max use time
+    private static final int CHARGE_TIME = 60;
+    private static final int THROW_TIME = 60;
+    private static final int SOUL_FIRE_DURATION = 260;
+    private static final int COOLDOWN_TIME = 200;
+    private static final int USE_DURATION = 72000;
     private static final int RETURN_TIME = 160;
 
     public FireSpearItem(Tier tier, Properties properties) {

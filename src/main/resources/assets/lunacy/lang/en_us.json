@@ -12,6 +12,10 @@
   "block.lunacy.cummingtonite_block": "Cummingtonite Block",
   "block.lunacy.cummingtonite_ingot_block": "Cummingtonite Ingot Block",
 
+  "item.lunacy.shi_bow": "Shi Bow",
+  "item.lunacy.shi_arrow": "Shi Arrow",
+
+
   "creativetab.lunacy.cummingtonite_items": "Cummingtonite Items",
   "creativetab.lunacy.cummingtonite_blocks": "Cummingtonite Blocks",
   "creativetab.lunacy.special_tools": "Special Tools",
@@ -22,6 +26,7 @@
   "effect.lunacy.ether": "Ether",
   "effect.lunacy.blood_surge": "Blood Surge",
   "effect.lunacy.mourning_funeral": "Mourning Funeral",
+  "effect.lunacy.soul_claim": "Soul Claim",
   "key.lunacy.class_selection": "Open Class Selection",
   "category.lunacy.general": "Lunacy",
 
@@ -42,6 +47,7 @@
   "item.lunacy.viridyum_greatsword.tooltip.ready": "§2This mysterious sword lets you rewind time!§r",
   "item.lunacy.viridyum_greatsword.tooltip.cooldown": "§Right click to view the cooldown§r",
   "item.lunacy.agnis_fury": "§9Agni's fury§r",
+  "item.lunacy.soul_scythe": "§5Soul Scythe§r",
 
   "class.lunacy.swordsman": "Swordsman",
   "class.lunacy.spearman": "Spearman",

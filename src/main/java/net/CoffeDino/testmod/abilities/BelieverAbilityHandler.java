@@ -258,8 +258,6 @@ public class BelieverAbilityHandler {
             }
 
             ticksActive++;
-
-            // Check if duration has expired
             if (ticksActive >= NIGHT_DURATION_TICKS) {
                 expired = true;
                 return true;

@@ -2,6 +2,7 @@ package net.CoffeDino.testmod.races;
 
 import net.CoffeDino.testmod.Lunacy;
 import net.CoffeDino.testmod.abilities.BelieverAbilityHandler;
+import net.CoffeDino.testmod.abilities.GatekeeperAbilityHandler;
 import net.CoffeDino.testmod.capability.IRaceSize;
 import net.CoffeDino.testmod.capability.RaceSizeProvider;
 import net.CoffeDino.testmod.effects.ModEffects;
@@ -41,6 +42,7 @@ public class races {
     private static float vampirebornHealthBonus = -5.0f;
     private static float etherealHealthBonus = 10.0f;
     private static float celestialHealthBonus = 5.0f;
+    private static float gatekeeperHealthBonus = 10.0f;
 
     public enum Race {
         SCULK("sculk", "Sculk", 1.8f, 0.6f),
@@ -52,7 +54,8 @@ public class races {
         ANGELBORN("angelborn", "Angelborn", 2.0f, 0.6f),
         VAMPIREBORN("vampireborn", "Vampireborn", 2.0f, 0.6f),
         ETHEREAL("ethereal", "Ethereal", 1.5f, 0.5f),
-        CELESTIAL("celestial", "Celestial", 2.1f, 0.6f);
+        CELESTIAL("celestial", "Celestial", 2.1f, 0.6f),
+        GATEKEEPER("gatekeeper", "Gatekeeper", 2.5f, 0.9f);
 
         private final String id;
         private final String displayName;
@@ -94,9 +97,14 @@ public class races {
     public static void setPlayerRace(Player player, Race race) {
         if (player == null) return;
 
+
+
         Race currentRace = getPlayerRace(player);
         if (currentRace == Race.BELIEVER && race != Race.BELIEVER) {
             BelieverAbilityHandler.onRaceChange(player);
+        }
+        if (currentRace == Race.GATEKEEPER && race != Race.GATEKEEPER) {
+            GatekeeperAbilityHandler.deactivateAbility(player);
         }
         if (!player.level().isClientSide() && player instanceof ServerPlayer serverPlayer) {
             RaceDataManager dataManager = RaceDataManager.get(serverPlayer);
@@ -199,6 +207,7 @@ public class races {
             case ETHEREAL -> etherealHealthBonus;
             case CELESTIAL -> celestialHealthBonus;
             case VAMPIREBORN -> vampirebornHealthBonus;
+            case GATEKEEPER -> gatekeeperHealthBonus;
         };
     }
 
@@ -216,6 +225,7 @@ public class races {
             case ETHEREAL -> applyEtherealTraits(player);
             case ANGELBORN -> applyAngelbornTraits(player);
             case VAMPIREBORN -> applyVampirebornTraits(player);
+            case GATEKEEPER -> applyGatekeeperTraits(player);
         }
         applyHealthBonus(player, race);
         applySizeModifiers(player, race);
@@ -235,6 +245,7 @@ public class races {
             player.removeEffect(MobEffects.REGENERATION);
             player.removeEffect(ModEffects.BLOOD_SURGE.getHolder().get());
             player.removeEffect(ModEffects.ETHER.getHolder().get());
+            player.removeEffect(MobEffects.SATURATION);
 
         }
 
@@ -294,6 +305,17 @@ public class races {
         player.getCapability(RaceSizeProvider.RACE_SIZE).ifPresent(IRaceSize::resetRaceSize);
         player.refreshDimensions();
         System.out.println("DEBUG: Cleared size modifiers for " + player.getName().getString());
+    }
+    private static void applyGatekeeperTraits(Player player) {
+        if (player instanceof ServerPlayer) {
+            player.addEffect(new MobEffectInstance(
+                    MobEffects.SATURATION,
+                    -1,
+                    0,
+                    true,
+                    false
+            ));
+        }
     }
 
     private static void applyAngelbornTraits(Player player) {

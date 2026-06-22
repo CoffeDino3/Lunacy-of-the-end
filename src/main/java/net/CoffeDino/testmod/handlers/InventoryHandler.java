@@ -38,11 +38,8 @@ public class InventoryHandler {
         if (player.level().isClientSide()) return;
 
         boolean isGunsmith = PlayerClasses.getPlayerClass(player) == PlayerClasses.PlayerClass.GUNSMITH;
-
-        // Check all inventory slots for the gun
         for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
             ItemStack stack = player.getInventory().getItem(i);
-
             if (stack.getItem() instanceof GunItem) {
                 if (!isGunsmith) {
                     player.getInventory().removeItem(stack);

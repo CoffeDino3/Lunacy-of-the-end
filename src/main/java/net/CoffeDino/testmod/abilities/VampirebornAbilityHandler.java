@@ -136,8 +136,6 @@ public class VampirebornAbilityHandler {
         public void addParticle() {
             particleCount++;
             lastParticleAddTime = System.currentTimeMillis();
-
-            // Damage player
             player.hurt(player.damageSources().magic(), SELF_DAMAGE_PER_PARTICLE);
 
             Lunacy.LOGGER.debug("Vampireborn particle added. Count: {}", particleCount);

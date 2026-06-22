@@ -42,7 +42,8 @@ public class RaceSelectionScreen extends Screen {
                 races.Race.VAMPIREBORN,
                 races.Race.ANGELBORN,
                 races.Race.ETHEREAL,
-                races.Race.CELESTIAL
+                races.Race.CELESTIAL,
+                races.Race.GATEKEEPER
         );
     }
 
@@ -114,12 +115,12 @@ public class RaceSelectionScreen extends Screen {
         int centerY = this.height / 2;
 
         races.Race current = raceList.get(currentRaceIndex);
-        guiGraphics.pose().pushPose(); // PUSH
+        guiGraphics.pose().pushPose();
         guiGraphics.pose().translate(0, 0, 100);
 
         guiGraphics.pose().pushPose();
-        guiGraphics.pose().translate(centerX, centerY - 95, 0); // Move higher up (from -85 to -110)
-        guiGraphics.pose().scale(1.5f, 1.5f, 1.5f); // Make text 50% bigger (1.5x scale)
+        guiGraphics.pose().translate(centerX, centerY - 95, 0);
+        guiGraphics.pose().scale(1.5f, 1.5f, 1.5f);
         guiGraphics.drawCenteredString(this.font, Component.literal(current.getDisplayName()), 0, 0, 0xFFFFFF);
         guiGraphics.pose().popPose();
 
@@ -156,6 +157,7 @@ public class RaceSelectionScreen extends Screen {
             case ANGELBORN: return "Emissaries of light, Angelborn heal quickly and smite enemies with divine precision.";
             case ETHEREAL: return "Existing between realities, Ethereals are untouchable and strike back at those who hit them.";
             case CELESTIAL: return "Masters of cosmic force, Celestials bend gravity to crush or manipulate foes.";
+            case GATEKEEPER: return "Guardians of the threshold, Gatekeepers can summon portals from the treasury to smite foes with numerous weapons.";
             default: return "A mysterious race with unknown abilities.";
         }
     }

@@ -18,7 +18,7 @@ import net.minecraftforge.fml.common.Mod;
 @Mod.EventBusSubscriber
 public class EtherEffect extends MobEffect {
     public EtherEffect() {
-        super(MobEffectCategory.BENEFICIAL, 0x87CEEB); // Light blue
+        super(MobEffectCategory.BENEFICIAL, 0x87CEEB);
     }
 
     @Override

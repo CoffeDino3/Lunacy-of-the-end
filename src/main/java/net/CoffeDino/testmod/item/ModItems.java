@@ -38,8 +38,13 @@ public class ModItems {
             () -> new ViridyumGreatswordItem(Tiers.NETHERITE, new Item.Properties().durability(2031).fireResistant()));
     public static final RegistryObject<Item> AGNIS_FURY = ITEMS.register("agnis_fury",
             () -> new FireSpearItem(Tiers.NETHERITE, new Item.Properties().durability(2031).fireResistant()));
-
+    public static final RegistryObject<Item> SOUL_SCYTHE = ITEMS.register("soul_scythe",
+            () -> new SoulScytheItem(Tiers.NETHERITE, new Item.Properties().durability(2031).fireResistant()));
     public static void register(IEventBus eventBus){
         ITEMS.register(eventBus);
     }
+    public static final RegistryObject<Item> SHI_BOW = ITEMS.register("shi_bow",
+            () -> new ShiBowItem(new Item.Properties().durability(2000)));
+    public static final RegistryObject<Item> SHI_ARROW = ITEMS.register("shi_arrow",
+            () -> new ShiArrowItem(new Item.Properties()));
 }

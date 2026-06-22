@@ -42,7 +42,7 @@ public class CelestialAbilityHandler {
     private static final int SINKING_RADIUS = 2;
     private static final int SINKING_DEPTH = 2;
     private static final Map<UUID, Long> COOLDOWNS = new HashMap<>();
-    private static final long COOLDOWN_DURATION = 13000; // 13 seconds
+    private static final long COOLDOWN_DURATION = 13000;
 
     public static void activateAbility(Player player) {
         if (player.level().isClientSide()) return;
@@ -240,7 +240,7 @@ public class CelestialAbilityHandler {
                 double z = gravityField.minZ + Math.random() * (gravityField.maxZ - gravityField.minZ);
 
                 level.sendParticles(
-                        new DustParticleOptions(new Vector3f(0.5f, 0.2f, 0.8f), 1.0f), // Purple color
+                        new DustParticleOptions(new Vector3f(0.5f, 0.2f, 0.8f), 1.0f),
                         x, y, z, 1, 0, -0.1, 0, 0.05
                 );
             }
@@ -289,8 +289,6 @@ public class CelestialAbilityHandler {
                 }
                 entity.hurtMarked = true;
                 entity.hurt(player.damageSources().magic(), PUSH_PULL_DAMAGE);
-
-                // Pull particles
                 level.sendParticles(
                         ParticleTypes.DRAGON_BREATH,
                         entity.getX(), entity.getY() + 1, entity.getZ(),

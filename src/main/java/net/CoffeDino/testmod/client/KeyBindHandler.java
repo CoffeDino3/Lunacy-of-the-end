@@ -41,7 +41,7 @@ public class KeyBindHandler {
     public static final KeyMapping ENDER_TELEPORT_KEY = new KeyMapping(
             "key.lunacy.ender_teleport",
             InputConstants.Type.KEYSYM,
-            InputConstants.KEY_R, // Same key as sculk, but will check race
+            InputConstants.KEY_R,
             "category.lunacy.abilities"
     );
     public static final KeyMapping PHANTOM_ABILITY_KEY = new KeyMapping(
@@ -80,10 +80,16 @@ public class KeyBindHandler {
             InputConstants.KEY_R,
             "category.lunacy.abilities"
     );
+    public static final KeyMapping GATEKEEPER_ABILITY_KEY = new KeyMapping(
+            "key.lunacy.gatekeeper_ability",
+            InputConstants.Type.KEYSYM,
+            InputConstants.KEY_R,
+            "category.lunacy.abilities"
+    );
     public static final KeyMapping CLASS_SELECTION_KEY = new KeyMapping(
             "key.lunacy.class_selection",
             InputConstants.Type.KEYSYM,
-            InputConstants.KEY_C, // C key for class selection
+            InputConstants.KEY_C,
             "category.lunacy.general"
     );
 
@@ -99,52 +105,70 @@ public class KeyBindHandler {
         event.register(ETHEREAL_ABILITY_KEY);
         event.register(ANGELBORN_ABILITY_KEY);
         event.register(CELESTIAL_ABILITY_KEY);
+        event.register(GATEKEEPER_ABILITY_KEY);
         event.register(CLASS_SELECTION_KEY);
     }
 
     private static boolean wasLoverKeyPressed = false;
     private static boolean wasVampirebornKeyPressed = false;
     private static long vampirebornPressTime = 0;
-    private static final long TAP_THRESHOLD = 200; // milliseconds
+    private static final long TAP_THRESHOLD = 200;
     private static boolean wasCelestialKeyPressed = false;
     private static boolean celestialAbilityActive = false;
+    private static boolean wasGatekeeperKeyPressed = false;
+    private static boolean gatekeeperAbilityActive = false;
 
     @SubscribeEvent
     public static void onClientTick(TickEvent.ClientTickEvent event) {
         if (event.phase == TickEvent.Phase.END) {
+
             Minecraft minecraft = Minecraft.getInstance();
             if (CLASS_SELECTION_KEY.consumeClick()) {
                 if (minecraft.player != null && minecraft.screen == null && minecraft.player.isAlive()) {
-                    // Only open if player hasn't chosen a class yet
+
                     if (!PlayerClasses.hasChosenClass(minecraft.player)) {
                         minecraft.setScreen(new ClassSelectionScreen());
                     }
                 }
             }
+            boolean isGatekeeperKeyPressed = GATEKEEPER_ABILITY_KEY.isDown();
+            if (minecraft.player != null && minecraft.screen == null && minecraft.player.isAlive()) {
+                races.Race race = races.getPlayerRace(minecraft.player);
+                if (race == races.Race.GATEKEEPER) {
+                    if (isGatekeeperKeyPressed && !wasGatekeeperKeyPressed && !gatekeeperAbilityActive) {
+                        if (minecraft.player.getFoodData().getFoodLevel() > 0) {
+                            NetworkHandler.sendToServer(new ActivateGatekeeperAbilityPacket());
+                            gatekeeperAbilityActive = true;
+                        }
+                    } else if (!isGatekeeperKeyPressed && wasGatekeeperKeyPressed && gatekeeperAbilityActive) {
+                        NetworkHandler.sendToServer(new DeactivateGatekeeperAbilityPacket());
+                        gatekeeperAbilityActive = false;
+                    }
+                } else {
+                    gatekeeperAbilityActive = false;
+                }
+            }
+            wasGatekeeperKeyPressed = isGatekeeperKeyPressed;
 
-            boolean isCelestialKeyPressed = CELESTIAL_ABILITY_KEY.isDown();
+                boolean isCelestialKeyPressed = CELESTIAL_ABILITY_KEY.isDown();
 
             if (minecraft.player != null && minecraft.screen == null && minecraft.player.isAlive()) {
                 races.Race race = races.getPlayerRace(minecraft.player);
                 if (race == races.Race.CELESTIAL) {
-                    // Key pressed - activate if not active and no cooldown
                     if (isCelestialKeyPressed && !wasCelestialKeyPressed && !celestialAbilityActive) {
                         if (CelestialAbilityHandler.canActivateAbility(minecraft.player)) {
                             NetworkHandler.sendToServer(new ActivateCelestialAbilityPacket());
                             celestialAbilityActive = true;
                         }
                     }
-                    // Key released - deactivate if active
                     else if (!isCelestialKeyPressed && wasCelestialKeyPressed && celestialAbilityActive) {
                         NetworkHandler.sendToServer(new DeactivateCelestialAbilityPacket());
                         celestialAbilityActive = false;
                     }
                 } else {
-                    // Not celestial race - reset state
                     celestialAbilityActive = false;
                 }
             } else {
-                // No valid player - reset state
                 celestialAbilityActive = false;
             }
 
@@ -276,24 +300,22 @@ public class KeyBindHandler {
             }
 
             wasVampirebornKeyPressed = isVampirebornKeyPressed;
+
         }
     }
     @SubscribeEvent
-    public static void onMouseClick(InputEvent.MouseButton.Post event) {
+    public static void onMouseClick(InputEvent.MouseButton.Pre event) {
         Minecraft minecraft = Minecraft.getInstance();
         if (minecraft.player == null || minecraft.screen != null || !minecraft.player.isAlive()) return;
-
         races.Race race = races.getPlayerRace(minecraft.player);
         if (race != races.Race.CELESTIAL || !CelestialAbilityHandler.isAbilityActive(minecraft.player)) {
             return;
         }
 
-        if (event.getButton() == 1 && event.getAction() == InputConstants.PRESS) { // Right click
+        if (event.getButton() == 1 && event.getAction() == InputConstants.PRESS) {
             NetworkHandler.sendToServer(new CelestialPushPacket());
-            // REMOVED: event.setCanceled(true);
-        } else if (event.getButton() == 0 && event.getAction() == InputConstants.PRESS) { // Left click
+        } else if (event.getButton() == 0 && event.getAction() == InputConstants.PRESS) {
             NetworkHandler.sendToServer(new CelestialPullPacket());
-            // REMOVED: event.setCanceled(true);
         }
     }
 }
